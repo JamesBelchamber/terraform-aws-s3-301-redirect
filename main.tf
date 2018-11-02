@@ -11,7 +11,8 @@ resource "aws_route53_record" "301" {
 }
 
 resource "aws_s3_bucket" "301" {
-  bucket = "${var.name}"
+  bucket = "${substring(var.name, -2, -1) == "." ? substring(var.name, 0, length(var.name) - 1) : var.name}"
+  acl    = "public-read"
 
   website {
     redirect_all_requests_to = "${var.target}"
